@@ -40,7 +40,6 @@ public class MasterMind {
         System.out.println();
 
         char [] solution = gerarString(); //gera uma solução aleatória
-        char [] solutionCopy = solution; //copia a solução
 
         System.out.println();
 
@@ -51,9 +50,14 @@ public class MasterMind {
 
             if (trie.length() > solution.length) { //se a resposta for > que 4, dá erro
                 System.out.println("ERROR! The combination has only 4 colors!");
+
             }
 
-            if (verifyColorPosition(solutionCopy,trie) == 4) { //vai à funcão verificar as cores e a posição
+            int [] resultado = verifyColorPosition(solution, trie);
+            System.out.println("There are " + GREEN + (resultado[0]) + " colors " + RESET + "in the " + GREEN + "right " + RESET + "position and " + RED + (resultado[1]) + " colors " + RESET + "in the " + RED + "wrong " + RESET + "position."); //aqui printa as cores que estão em posições corretas e as que estão em posições incorretas
+
+            if (resultado[0] == 4) {//vai à funcão verificar as cores e a posição, se todas as posições tiverem cores corretas, o programa parabeniza o utilizador e acaba
+                System.out.println("Congratulations!! You guessed the secret combination!! :)");
                 break;
             }
 
@@ -84,24 +88,28 @@ public class MasterMind {
         return array;
     }
 
-    public static int verifyColorPosition (char [] solution, String trie) {
+    public static int [] verifyColorPosition (char [] solution, String trie) {
         int countColorsRPosition = 0; //contar cor correta em posição correta
         int countColorsWPosition = 0; //contar cor correta em posição errada
+        String RED = "\u001B[31m";
+        String GREEN = "\u001B[32m";
+        String RESET = "\u001B[0m";
+        char [] solutionCopy = solution; //copia a solução
+        char [] trieCopy = trie.toCharArray();
 
         for (int i = 0; i < solution.length; i++) { //corre enquanto tiver o tamanho da solução
-            if (trie.indexOf(solution[i]) != -1 && solution[i] == trie.charAt(i)) { //se a cor for correta, ou seja, dentro do string que a pessoa der tiver um cor que existe no array solução o resultado da função é sempre diferente de -1, e também a posição dos chars da string do utlizador for igual à da solução
-                countColorsRPosition++; //conta +1
+            if (trie.indexOf(solutionCopy[i]) != -1 && solutionCopy[i] == trie.charAt(i)) { //se a cor for correta, ou seja, dentro do string que a pessoa der tiver um cor que existe no array solução o resultado da função é sempre diferente de -1, e também a posição dos chars da string do utlizador for igual à da solução
+                countColorsRPosition++;//conta +1
+                solutionCopy[i] = '*';
+                trieCopy[i]= '+';
             }
-            else if (trie.indexOf(solution[i]) != -1 && solution[i] != trie.charAt(i)) {//se a a cor for incorreta mas a posição estiver mal
+            else if (trie.indexOf(solutionCopy[i]) != -1 && solutionCopy[i] != trie.charAt(i)) {//se a a cor for incorreta mas a posição estiver mal
                 countColorsWPosition++; //conta+1
             }
         }
-        System.out.println("There are " + (countColorsRPosition) + " colors in the right position and " + (countColorsWPosition) + " colors in the wrong position."); //aqui printa as cores que estão em posições corretas e as que estão em posições incorretas
-
-        if (countColorsRPosition == 4) { // se todas as posições tiverem cores corretas, o programa parabeniza o utilizador e acaba
-            System.out.println("Congratulations!! You guessed the secret combination!! :)");
-        }
-        return countColorsRPosition;
+        int [] resultado = new int[2];
+        resultado [0] = countColorsRPosition;
+        resultado [1] = countColorsWPosition;
+        return resultado;
     }
-
 }
