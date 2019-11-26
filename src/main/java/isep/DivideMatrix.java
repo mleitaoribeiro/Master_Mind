@@ -1,6 +1,6 @@
 package isep;
 
-public class Divisao {
+public class DivideMatrix {
 
     public int [][] matrixIdent (int tamanho) {
         int[][] matrixIdent = new int[tamanho][tamanho];

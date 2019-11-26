@@ -1,5 +1,7 @@
 package isep;
 
+import java.io.CharArrayReader;
+import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -94,10 +96,10 @@ public class MasterMind {
         String RED = "\u001B[31m";
         String GREEN = "\u001B[32m";
         String RESET = "\u001B[0m";
-        char [] solutionCopy = solution; //copia a solução
-        char [] trieCopy = trie.toCharArray();
 
         for (int i = 0; i < solution.length; i++) { //corre enquanto tiver o tamanho da solução
+            char [] solutionCopy = solution; //copia a solução
+            char [] trieCopy = trie.toCharArray();
             if (trie.indexOf(solutionCopy[i]) != -1 && solutionCopy[i] == trie.charAt(i)) { //se a cor for correta, ou seja, dentro do string que a pessoa der tiver um cor que existe no array solução o resultado da função é sempre diferente de -1, e também a posição dos chars da string do utlizador for igual à da solução
                 countColorsRPosition++;//conta +1
                 solutionCopy[i] = '*';
@@ -105,7 +107,11 @@ public class MasterMind {
             }
             else if (trie.indexOf(solutionCopy[i]) != -1 && solutionCopy[i] != trie.charAt(i)) {//se a a cor for incorreta mas a posição estiver mal
                 countColorsWPosition++; //conta+1
+                solutionCopy[i] = '*';
+                trieCopy[i]= '+';
             }
+            solutionCopy[i] = solution[i];
+            trieCopy[i] = trie.charAt(i);
         }
         int [] resultado = new int[2];
         resultado [0] = countColorsRPosition;
